@@ -6,18 +6,22 @@ import (
 	m "hugdev/ambiez-go/model"
 )
 
-func i(i uint) *uint { return &i }
+func int(i uint) *uint     { return &i }
+func boolean(b bool) *bool { return &b }
 
 func SanitizeInsert(param m.TaskRequest) (m.TaskRequest, error) {
 
 	if param.Title == nil {
 		return param, errors.New("Title url cannot be empty")
 	}
+	if param.Completed == nil {
+		param.Completed = boolean(false)
+	}
 	if param.Hour == nil {
-		param.Hour = i(0)
+		param.Hour = int(0)
 	}
 	if param.Minute == nil {
-		param.Minute = i(0)
+		param.Minute = int(0)
 	}
 
 	return param, nil

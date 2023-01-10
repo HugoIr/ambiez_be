@@ -3,6 +3,7 @@ package taskmodule
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"log"
 
 	m "hugdev/ambiez-go/model"
@@ -43,7 +44,7 @@ func (s *storage) GetTask(ctx context.Context, id int64) (result m.TaskResponse,
 		&result.Minute,
 	); err != nil {
 		log.Println("[TaskModule][GetTask] problem querying to db, err: ", err.Error())
-		return result, err
+		return result, errors.New("Task does not exist")
 	}
 	result.ID = id
 
@@ -70,7 +71,7 @@ func (s *storage) GetTaskAll(ctx context.Context) (result []m.TaskResponse, err 
 			&rowData.Minute,
 		); err != nil {
 			log.Println("[TaskModule][GetTaskAll] problem with scanning db row, err: ", err.Error())
-			return
+			return result, err
 		}
 		result = append(result, rowData)
 	}
@@ -98,7 +99,7 @@ func (s *storage) UpdateTask(ctx context.Context, id int64, param m.TaskRequest)
 	}
 	if rowsAffected == 0 {
 		log.Println("[TaskModule][UpdateTask] no rows affected in db")
-		return
+		return result, errors.New("Task does not exist")
 	}
 
 	result.ID = id
@@ -111,18 +112,18 @@ func (s *storage) ToggleTask(ctx context.Context, id int64) (err error) {
 		id,
 	)
 	if err != nil {
-		log.Println("[TaskModule][UpdateTask][Storage] problem querying to db, err: ", err.Error())
+		log.Println("[TaskModule][ToggleTask][Storage] problem querying to db, err: ", err.Error())
 		return
 	}
 
 	rowsAffected, err := res.RowsAffected()
 	if err != nil {
-		log.Println("[TaskModule][UpdateTask] problem querying to db, err: ", err.Error())
+		log.Println("[TaskModule][ToggleTask] problem querying to db, err: ", err.Error())
 		return
 	}
 	if rowsAffected == 0 {
-		log.Println("[TaskModule][UpdateTask] no rows affected in db")
-		return
+		log.Println("[TaskModule][ToggleTask] no rows affected in db")
+		return errors.New("Task does not exist")
 	}
 
 	return
@@ -140,7 +141,7 @@ func (s *storage) RemoveTask(ctx context.Context, id int64) (result m.TaskRespon
 	}
 	if rowsAffected == 0 {
 		log.Println("[TaskModule][RemoveTask] no effect ")
-		return
+		return result, errors.New("Task does not exist")
 	}
 
 	return
