@@ -32,6 +32,23 @@ const (
 	FROM
 		task
 `
+	getTodoTaskAllQuery = `
+	SELECT
+		*
+	FROM
+		task
+	WHERE
+		completed=FALSE
+`
+
+	getCompletedTaskAllQuery = `
+	SELECT
+		*
+	FROM
+		task
+	WHERE
+		completed=TRUE
+`
 
 	updateTaskQuery = `
 	UPDATE

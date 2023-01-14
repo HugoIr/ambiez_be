@@ -37,9 +37,29 @@ func (p *Module) GetTask(ctx context.Context, id int64) (result m.TaskResponse, 
 }
 
 func (p *Module) GetTaskAll(ctx context.Context) (result []m.TaskResponse, err error) {
-	result, err = p.Storage.GetTaskAll(ctx)
+	result, err = p.Storage.GetTaskAll(ctx, getTaskAllQuery)
 	if err != nil {
 		log.Println("[TaskModule][GetTaskAll] problem getting storage data, err: ", err.Error())
+		return
+	}
+
+	return
+}
+
+func (p *Module) GetTodoTaskAll(ctx context.Context) (result []m.TaskResponse, err error) {
+	result, err = p.Storage.GetTaskAll(ctx, getTodoTaskAllQuery)
+	if err != nil {
+		log.Println("[TaskModule][GetTodoTaskAll] problem getting storage data, err: ", err.Error())
+		return
+	}
+
+	return
+}
+
+func (p *Module) GetCompletedTaskAll(ctx context.Context) (result []m.TaskResponse, err error) {
+	result, err = p.Storage.GetTaskAll(ctx, getCompletedTaskAllQuery)
+	if err != nil {
+		log.Println("[TaskModule][GetCompletedTaskAll] problem getting storage data, err: ", err.Error())
 		return
 	}
 

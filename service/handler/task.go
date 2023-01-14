@@ -22,6 +22,26 @@ func (p *Handler) GetTasks(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, res)
 }
 
+func (p *Handler) GetTodoTasks(c *gin.Context) {
+
+	res, err := p.ambiez.GetTodoTaskAll(c)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": errors.New("Bad Request")})
+		return
+	}
+	c.IndentedJSON(http.StatusOK, res)
+}
+
+func (p *Handler) GetCompletedTasks(c *gin.Context) {
+
+	res, err := p.ambiez.GetCompletedTaskAll(c)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": errors.New("Bad Request")})
+		return
+	}
+	c.IndentedJSON(http.StatusOK, res)
+}
+
 func (p *Handler) GetTask(c *gin.Context) {
 	// id := c.Param("id")
 	queryID, err := strconv.ParseInt(c.Param("id"), 10, 64)

@@ -51,10 +51,10 @@ func (s *storage) GetTask(ctx context.Context, id int64) (result m.TaskResponse,
 	return
 }
 
-func (s *storage) GetTaskAll(ctx context.Context) (result []m.TaskResponse, err error) {
+func (s *storage) GetTaskAll(ctx context.Context, query string) (result []m.TaskResponse, err error) {
 	result = make([]m.TaskResponse, 0)
 
-	rows, err := s.AmbiezDB.QueryContext(ctx, getTaskAllQuery)
+	rows, err := s.AmbiezDB.QueryContext(ctx, query)
 	if err != nil {
 		log.Println("[TaskModule][GetTaskAll] problem querying to db, err: ", err.Error())
 		return

@@ -38,6 +38,8 @@ func main() {
 
 	router := gin.Default()
 	router.GET("/tasks", ts.GetTasks)
+	router.GET("/tasks/todo", ts.GetTodoTasks)
+	router.GET("/tasks/completed", ts.GetCompletedTasks)
 	router.GET("/tasks/:id", ts.GetTask)
 	router.POST("/tasks", ts.AddTask)
 	router.PATCH("/tasks/:id", ts.UpdateTask)
